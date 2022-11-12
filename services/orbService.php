@@ -1,16 +1,34 @@
 <?php
-require_once "DataSource/orbRates.php";
-require_once "Datasource/orbs.php";
+require_once './DataSource/orbRates.php';
+require_once './DataSource/orbs.php';
+require_once './DataSource/fileDriver.php';
 
-getOrbs($orbs);
-getRates($rates);
 
-function getOrbsWithRates($orbs,$rates){
+
+
+function getOrbsWithRates($orbs,$rates){           
     foreach($orbs as $orb){
         foreach($rates as $rate){
             if ($orb['id']== $rate['orb_id']){
-            $res[] = array_merge($orb,['rate' => $rate['rate']]);
+            $orbsWithRates[] = array_merge($orb,['rate' => $rate['rate']]);
             }
         } 
-    } return $res;
+    } return $orbsWithRates;
 }
+
+
+function addOrb(string $code, string $name, int $rate){   
+    $orbData = [
+        'code' => $code,
+        'name' => $name
+    ];
+    $id = insertOrbGetId($orbData);
+    $rateData = [
+        'orb_id' => $id,
+        'rate' => $rate
+    ];
+
+    $rateID = insertRateGetId($rateData);
+
+}
+
