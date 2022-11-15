@@ -1,0 +1,1 @@
+{"orbs":{"auto_increment":3,"items":[{"code":"ex","name":"Exalted","id":1},{"code":"div","name":"Divine","id":2}]},"rates":{"auto_increment":3,"items":[{"orb_id":1,"rate":3000,"id":1},{"orb_id":2,"rate":30000,"id":2}]}}

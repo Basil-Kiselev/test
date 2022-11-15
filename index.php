@@ -1,14 +1,33 @@
+<?php
+    require_once 'services/orbService.php';
+    require_once 'DataSource/fileDriver.php';
+    require_once 'DataSource/orbs.php';
+    require_once 'DataSource/orbRates.php';
+
+    checkFileSource();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && validateForm($_POST)){      
+      addOrb($_POST['code'],$_POST['name'],$_POST['rate']);
+    }
+
+    if (checkFileDataSource()){
+      $orbs = getOrbs();
+      $rates = getRates();
+    $orbsWithRates = getOrbsWithRates($orbs,$rates);
+    }
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Study/bootstrap-5.2.2-dist/css/bootstrap.css ">
-    <?php require_once 'services/orbService.php'; ?>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" >   
     <title>Document</title>
 </head>
-<body>
+<body>  
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Валюта</a>
@@ -42,10 +61,28 @@
     </div>
   </div>
 </nav>
+
+<form action="index.php" method="post" style="width: 15rem; margin:20px 0px 20px 30px;" >
+    <div class="mb-3">
+      <label for="Code" class="form-label">Код валюты</label>
+      <input type="text" class="form-control" name="code">      
+    </div>
+    <div class="mb-3">
+      <label for="Name" class="form-label">Название</label>
+      <input type="text" class="form-control" name="name">
+    </div>
+    <div class="mb-3">
+      <label for="Rate" class="form-label">Курс</label>
+      <input type="text" class="form-control" name="rate">
+    </div>    
+    <button type="submit" class="btn btn-primary">Клац</button>
+  </form>
+
+  
 <div class="flex" style="display: flex;">
 
-<?php $res = getOrbsWithRates($orbs,$rates);
-foreach($res as $orb){?>
+<?php if (checkFileDataSource()){
+foreach($orbsWithRates as $orb){?>
 
 <div class="card" style="width: 18rem;" >
   
@@ -56,9 +93,9 @@ foreach($res as $orb){?>
     <a href="#" class="btn btn-primary">Купить</a>
   </div>
 </div>
-<?php } ?>
+<?php }} ?>
 </div>
-    <script src="/Study/bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
